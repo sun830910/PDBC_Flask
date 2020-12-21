@@ -1,0 +1,36 @@
+<!--
+DO NOT MODIFY THIS FILE!
+Your solution needs to *use* this template file and should therefore
+be adapted to work with this template, not the other way around!
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Track List</title>
+    </head>
+    <body>
+        {% if album["Title"] is defined %}
+        <h3>Tracklist: {{album["Title"]}} by {{album["Name"]}}</h3>
+        <table border=5 width="50%">
+            <thead>
+                <th>Track Name</th>
+                <th>Composer</th>
+                <th>Length (Seconds)</th>
+                <th>Price</th>
+            </thead>
+            {% for track in tracks %}
+            <tr>
+                <td>{{track["Name"]}}</td>
+                <td>{{track["Composer"]}}</td>
+                <td>{{track["Seconds"]}}</td>
+                <td>{{track["Price"]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <h3> The Provided Album ID could not be found</h3>
+        {% endif %}
+        <br><br>
+        <a href="/">Go back to home page</a>
+    </body>
+</html>

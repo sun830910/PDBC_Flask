@@ -1,0 +1,43 @@
+<!--
+DO NOT MODIFY THIS FILE!
+Your solution needs to *use* this template file and should therefore
+be adapted to work with this template, not the other way around!
+-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>List</title>
+    </head>
+    <body>
+        <h3>Album List</h3>
+        <table border=5 width="50%">
+            <thead>
+                <th>Album Title</th>
+                <th>Artist Name</th>
+                <th>Album Value</th>
+                <th>Album Duration</th>
+                <th>View Tracks</th>
+            </thead>
+            {% for row in rows %}
+            <tr>
+                <td>{{row["Title"]}}</td>
+                <td>{{row["Name"]}}</td>
+                <!-- 
+                    The line below tells Python that we want "Value" to be
+                    displayed to two floating decimals e.g. 9.99 (not 9.9999999)
+                -->
+                <td>{{"%.2f"|format(row["Value"])}}</td>
+                <!--
+                    The line below tells Jinja2 that the "Duration" should be
+                    interpreted as an integer value.
+                -->
+                <td>{{row["Duration"]|int}}</td>
+                <td><a href="/tracks/{{row['AlbumId']}}"> Tracks </a></td> 
+            </tr>
+            {% endfor %}
+        </table>
+        <br><br>
+        <a href="/">Go back to home page</a>
+    </body>
+</html>

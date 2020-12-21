@@ -1,0 +1,76 @@
+<!--
+DO NOT MODIFY THIS FILE!
+Your solution needs to *use* this template file and should therefore
+be adapted to work with this template, not the other way around!
+-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Add a New Item to the Collection</title>
+    </head>
+    <body>
+        
+        <!--
+        This block checks for the presence of a variable named "error".
+        If "error" is defined, then the proceeding code block will be 
+        displayed to the user. Otherwise, it is ignored. 
+        -->
+        {% if error is defined %}
+        <div style="color: red;">
+            <h2>ERROR! There were issues adding your track to the DB.</h2>
+            
+            <table>
+                <thead>
+                    <th>Error Message(s)</th>
+                </thead>
+                
+                <!--
+                    Iterate through the error messages and display them
+                    in a table.
+                -->
+                {% for m in msg %}
+                <tr>
+                    <td>{{m}}</td>
+                </tr>
+                {% endfor %}
+                
+            </table>
+        </div>
+        {% endif %}
+        
+        <h2>
+            Add a New Track
+        </h2>
+        <form action = "/add/track" method="POST">
+            <table>
+                <tr>
+                    <td>Track Name</td>
+                    <td><input type="text" name="Name"></td>
+                </tr>
+                <tr>
+                    <td>AlbumId</td>
+                    <td><input type="text" name="AlbumId"></td>
+                </tr>
+                <tr>
+                    <td>GenreId</td>
+                    <td><input type="text" name="GenreId"></td>
+                </tr>
+                <tr>
+                    <td>Composer</td>
+                    <td><input type="text" name="Composer"></td>
+                </tr>
+                <tr>
+                    <td>Duration (Seconds)</td>
+                    <td><input type="text" name="Seconds"></td>
+                </tr>
+                <tr>
+                    <td>Price</td>
+                    <td><input type="text" name="UnitPrice"></td>
+                </tr>
+                
+                <tr><td><input type="submit" value="Submit"></td></tr>
+            </table>
+        </form>
+    </body>
+</html>
