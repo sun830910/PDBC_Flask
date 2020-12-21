@@ -12,12 +12,10 @@ import logging
 
 
 class tsv_importer(object):
-    def __init__(self, tsv_path):
-        self.tsv_path = tsv_path
-
-    def read_from_tsv(self):
+    @staticmethod
+    def read_from_tsv(tsv_path):
         try:
-            tsv_file = open(self.tsv_path, newline='')
+            tsv_file = open(tsv_path, newline='')
             data = csv.DictReader(tsv_file, delimiter='\t')
             return data
         except Exception as e:
@@ -45,8 +43,7 @@ if __name__ == '__main__':
     tsv_path = 'TracksToAdd.tsv'
     db_path = "iMusic.db"
 
-    importer = tsv_importer(tsv_path)
-    data = importer.read_from_tsv()
+    data = tsv_importer.read_from_tsv(tsv_path)
 
     for row in data:
         print(row)
