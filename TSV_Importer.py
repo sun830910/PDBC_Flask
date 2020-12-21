@@ -25,29 +25,30 @@ class tsv_importer(object):
 
     @staticmethod
     def write_to_db(data, db_path):
-        with sqlite3.connect(db_path) as conn:
-            cur = conn.cursor()
-            cur.execute(
-                "CREATE TABLE IF NOT EXISTS iMusic(Name varchar(30),AlbumId varchar(30), GenreId varchar(30), Composer varchar(30), Milliseconds varchar(30), UnitPrice varchar(30))")
-            for row in data:
+        try:
+            with sqlite3.connect(db_path) as conn:
+                cur = conn.cursor()
                 cur.execute(
-                    "INSERT INTO Track(Name, AlbumId, GenreId, Composer, Milliseconds, UnitPrice) VALUES (?,?,?,?,?,?);",
-                    [row['Name'], row['AlbumId'], row['GenreId'], row['Composer'], row['Milliseconds'],
-                     row['UnitPrice']])
-            conn.commit()
-        return
+                    "CREATE TABLE IF NOT EXISTS iMusic(Name varchar(30),AlbumId varchar(30), GenreId varchar(30), Composer varchar(30), Milliseconds varchar(30), UnitPrice varchar(30))")
+                for row in data:
+                    cur.execute(
+                        "INSERT INTO Track(Name, AlbumId, GenreId, Composer, Milliseconds, UnitPrice) VALUES (?,?,?,?,?,?);",
+                        [row['Name'], row['AlbumId'], row['GenreId'], row['Composer'], row['Milliseconds'],
+                         row['UnitPrice']])
+                conn.commit()
+            return
+        except Exception as e:
+            logging.warning("Can not write to database！ {}".format(e))
 
 
-def main():
+if __name__ == '__main__':
     tsv_path = 'TracksToAdd.tsv'
     db_path = "iMusic.db"
 
     importer = tsv_importer(tsv_path)
     data = importer.read_from_tsv()
+
     for row in data:
         print(row)
+
     tsv_importer.write_to_db(data, db_path)
-
-
-if __name__ == '__main__':
-    main()
