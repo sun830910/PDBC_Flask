@@ -1,36 +1,17 @@
-# You should not import any additional modules
-# You can, however, import additional functionalities 
-# from the flask and sqlite3 modules
+# -*- coding: utf-8 -*-
 
+"""
+Created on 12/21/20 3:54 PM
+@Author  : Justin Jiang
+@Email   : jw_jiang@pku.edu.com
+"""
 
 from flask import Flask, render_template, request
 import sqlite3
 import logging
-import regex
+from utils import get_data_from_db, is_float
 
 app = Flask(__name__)
-
-
-def get_data_from_db(database, table, attribute):
-    result = set()
-    try:
-        conn = sqlite3.connect(database)
-        conn.row_factory = sqlite3.Row
-        cur = conn.cursor()
-        cur.execute("SELECT {table}.{attribute} FROM {table}".format(table=table, attribute=attribute))
-        sql_result = cur.fetchall()
-        for idx in sql_result:
-            result.add(idx[attribute])
-    except Exception as e:
-        logging.warning("Can't get {attribute} from {table}: {error}".format(attribute=attribute, table=table, error=e))
-    return result
-
-
-def is_float(sentence):
-    pattern = "^\d.*\.\d.*$"
-    if regex.search(pattern, sentence) != None:
-        return True
-    return False
 
 
 @app.route('/')
@@ -82,7 +63,7 @@ def addtrack():
             if AlbumId not in AlbumId_set:
                 reason.add("The specified AlbumId does not exist in the DB.")
         except ValueError:  # 若AlbumId转换失败，即字符串中含有其他不能转换成数字的因素存在如"100a"
-            reason.add("The specified AlbumId does not exist in the DB.")
+            reason.add("The AlbumId format is wrong format!")
 
         # GenreId
         try:
@@ -90,7 +71,7 @@ def addtrack():
             if GenreId not in GenreId_set:
                 reason.add("The specified GenreId does not exist in the DB.")
         except ValueError:
-            reason.add("The specified GenreId does not exist in the DB.")
+            reason.add("The GenreId format is wrong format!")
 
         # Seconds
         try:
@@ -98,7 +79,7 @@ def addtrack():
             if Seconds == 0:
                 reason.add("The specified duration is too short. Must be greater than zero.")
         except ValueError:
-            reason.add("The specified Milliseconds is too short. Must be greater than zero.")
+            reason.add("The Milliseconds format is wrong format！")
 
         # UnitPrice
         try:
@@ -106,7 +87,7 @@ def addtrack():
             if not is_float(UnitPrice) or UnitPrice_float == 0:
                 reason.add("The specified price is invalid.")
         except ValueError:
-            reason.add("The specified price is invalid.")
+            reason.add("The specified price format is wrong format")
 
         if len(reason) != 0:
             return render_template('add.html', error=1, msg=reason)
