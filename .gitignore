@@ -1,3 +1,5 @@
 iMusic.db
 *.tsv
 *.db
+.idea
+__pycache__
